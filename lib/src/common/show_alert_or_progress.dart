@@ -7,7 +7,7 @@ import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
 class ShowAlertOrProgress {
   static progressCustom({
     required SimpleFontelicoProgressDialog pd,
-  }) async {
+  }) {
     pd.show(
       width: deviceWidth(pd.context),
       type: SimpleFontelicoProgressDialogType.custom,
@@ -44,7 +44,7 @@ class ShowAlertOrProgress {
 
   static alertFiturInProgress({
     required BuildContext context,
-  }) async {
+  }) {
     Alert(
       context: context,
       style: alertStyleWithoutButton,

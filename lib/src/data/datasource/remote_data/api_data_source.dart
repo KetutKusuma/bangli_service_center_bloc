@@ -1,9 +1,10 @@
 import '../../../../core/return_response/return_response.dart';
 
 abstract class ApiDataSource {
-  Future<ReturnResponseModel> getVendorWithComplaintCount();
-  Future<ReturnResponseModel> login(
+  Future<ReturnResponse> getVendorWithComplaintCount();
+  Future<ReturnResponse> login(
       {required String phone, required String password});
-  Future<ReturnResponseModel> autoLogin();
-  Future<ReturnResponseModel> getUserDetail();
+  Future<ReturnResponse> autoLogin();
+  Future<ReturnResponse> getUserDetail();
+  Future<ReturnResponse> createComplaint({required String idVendor});
 }

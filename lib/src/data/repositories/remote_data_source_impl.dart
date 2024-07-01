@@ -8,17 +8,22 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   RemoteDataSourceImpl(this.apiDataSource);
 
   @override
-  Future<ReturnResponseModel> getVendorWithComplaintCount() async {
+  Future<ReturnResponse> getVendorWithComplaintCount() async {
     return await apiDataSource.getVendorWithComplaintCount();
   }
 
   @override
-  Future<ReturnResponseModel> login(String phone, String password) async {
+  Future<ReturnResponse> login(String phone, String password) async {
     return await apiDataSource.login(phone: phone, password: password);
   }
 
   @override
-  Future<ReturnResponseModel> autoLogin() async {
+  Future<ReturnResponse> autoLogin() async {
     return await apiDataSource.autoLogin();
+  }
+
+  @override
+  Future<ReturnResponse> createComplaint({required String idVendor}) async {
+    return await apiDataSource.createComplaint(idVendor: idVendor);
   }
 }

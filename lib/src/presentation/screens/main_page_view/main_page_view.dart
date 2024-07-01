@@ -1,8 +1,7 @@
-import 'dart:developer';
-
 import 'package:bangli_service_center_bloc/src/common/constant.dart';
 import 'package:bangli_service_center_bloc/src/common/shared/shared_custom_alert/custom_alert.dart';
-import 'package:bangli_service_center_bloc/src/common/shared/shared_custom_progress/custom_progress.dart';
+import 'package:bangli_service_center_bloc/src/common/show_alert_or_progress.dart';
+import 'package:bangli_service_center_bloc/src/presentation/bloc/complaint/complaint_bloc.dart';
 import 'package:double_tap_to_exit/double_tap_to_exit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,22 +19,45 @@ class MainPageView extends StatefulWidget {
 class _MainPageViewState extends State<MainPageView> {
   late PageController pageController;
   int? pageIndex;
-  SimpleFontelicoProgressDialog? pd;
+  late SimpleFontelicoProgressDialog pd;
 
   @override
   void initState() {
     super.initState();
     pageIndex = 0;
-    pd = SimpleFontelicoProgressDialog(
-      context: context,
-      barrierDimisable: false,
-    );
+    pageController = PageController();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener(
-      listener: (context, state) {},
+    pd = SimpleFontelicoProgressDialog(
+      context: context,
+      barrierDimisable: false,
+    );
+    return BlocListener<ComplaintBloc, ComplaintState>(
+      listener: (context, state) {
+        if (state is ComplaintLoading) {
+          ShowAlertOrProgress.progressCustom(pd: pd);
+        }
+        if (state is ComplaintSuccess) {
+          pd.hide();
+          alertSuccess(
+            isDismiss: true,
+            context: context,
+            desc: state.returnResponse.message,
+          );
+          setState(() {});
+        }
+        if (state is ComplaintFailed) {
+          pd.hide();
+          alertError(
+            isDismiss: true,
+            context: context,
+            desc: state.returnResponse.message,
+          );
+          setState(() {});
+        }
+      },
       child: DoubleTapToExit(
         snackBar: SnackBar(
           content: Text(
@@ -97,62 +119,19 @@ class _MainPageViewState extends State<MainPageView> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      onPressed: () async {
-                        progressCustom(
-                          pd: pd!,
-                        );
-                        if (await checkConnectionReuseable() == false) {
-                          pd!.hide();
-                          if (mounted) {
-                            alertError(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        idPSC.value = "e929b973-77f6-4478-93af-938fdbcb7c8a";
+                        if (idPSC.value == "") {
+                          alertError(
                               isDismiss: true,
                               context: context,
                               desc:
-                                  'Internetmu mungkin tidak stabil, coba lagi',
-                            );
-                          }
+                                  "Maaf tidak bisa membuat pengaduan, coba lagi");
                         } else {
-                          log('id psc : ${idPSC.value}');
-                          if (idPSC.value == '') {
-                            if (mounted) {
-                              alertError(
-                                context: context,
-                                isDismiss: true,
-                                desc:
-                                    'Maaf sekarang tidak bisa melaporkan coba sekali lagi',
-                              );
-                            }
-                          }
-                          // Map<String, dynamic> result =
-                          //     await berandaController!.createPengaduan(
-                          //   idVendor: idPSC.value,
-                          // );
-                          // if (mounted) {
-                          //   if (result['status']) {
-                          //     pd!.hide();
-                          //     Alert(
-                          //       context: context,
-                          //       type: AlertType.success,
-                          //       style: alertStyleWithoutButton,
-                          //       title: "Sukses",
-                          //       desc: result['message'],
-                          //     ).show().then((value) {
-                          //       Navigator.pop(context);
-                          //       setState(() {});
-                          //     });
-                          //   } else {
-                          //     pd!.hide();
-                          //     Alert(
-                          //       context: context,
-                          //       type: AlertType.error,
-                          //       style: alertStyleWithoutButton,
-                          //       title: "Yahhh",
-                          //       desc: result['message'],
-                          //     ).show().then((value) {
-                          //       Navigator.pop(context);
-                          //     });
-                          //   }
-                          // }
+                          context
+                              .read<ComplaintBloc>()
+                              .add(CreateComplaintEvent(id: idPSC.value));
                         }
                       },
                     ),

@@ -3,7 +3,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../constant.dart';
 
-customAlert({
+Future customAlert({
   required BuildContext context,
   required String desc,
   title = 'Hi',
@@ -23,7 +23,7 @@ customAlert({
   ).show();
 }
 
-alertError({
+Future alertError({
   required bool isDismiss,
   required BuildContext context,
   required String desc,
@@ -39,7 +39,7 @@ alertError({
   ).show();
 }
 
-alertSuccess({
+Future alertSuccess({
   required bool isDismiss,
   required BuildContext context,
   required String desc,
@@ -55,7 +55,7 @@ alertSuccess({
   ).show();
 }
 
-alertFiturInProgress({
+Future alertFiturInProgress({
   required BuildContext context,
 }) async {
   Alert(

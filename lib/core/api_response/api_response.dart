@@ -1,6 +1,6 @@
 class ApiResponseModel {
   final int? statusCode;
-  final bool? isSuccess;
+  bool isSuccess = false;
   String? message;
   dynamic errorMessage;
   final dynamic data;

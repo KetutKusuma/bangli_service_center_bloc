@@ -25,24 +25,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     emit(const AuthLoading());
-    ReturnResponseModel r =
+    ReturnResponse r =
         await _logInCase.call(loginEvent.phone, loginEvent.password);
     if (r.status == false) {
-      return emit(AuthFailure(returnResponseModel: r));
+      return emit(AuthFailure(returnResponse: r));
     }
 
-    return emit(AuthSuccess(returnResponseModel: r));
+    return emit(AuthSuccess(returnResponse: r));
   }
 
   Future<void> autologinnn(
       AutoLoginEvent event, Emitter<AuthState> emit) async {
     emit(const AuthLoading());
-    ReturnResponseModel r = await _autoLoginCase.call();
+    ReturnResponse r = await _autoLoginCase.call();
 
     if (r.status == false) {
-      return emit(AuthFailure(returnResponseModel: r));
+      return emit(AuthFailure(returnResponse: r));
     }
 
-    return emit(AuthSuccess(returnResponseModel: r));
+    return emit(AuthSuccess(returnResponse: r));
   }
 }

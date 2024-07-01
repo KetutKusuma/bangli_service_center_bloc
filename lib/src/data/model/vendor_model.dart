@@ -1,16 +1,23 @@
-class VendorModel {
-  String? id, vendor, inisialVendor, descVendor, iconData, hexColor;
-  int? isAktif;
+import 'package:bangli_service_center_bloc/src/domain/entities/vendor_entity.dart';
 
+class VendorModel extends VendorEntity {
   VendorModel({
-    this.id,
-    this.vendor,
-    this.inisialVendor,
-    this.descVendor,
-    this.iconData,
-    this.hexColor,
-    this.isAktif,
-  });
+    String? id,
+    String? vendor,
+    String? inisialVendor,
+    String? descVendor,
+    String? iconData,
+    String? hexColor,
+    int? isAktif,
+  }) : super(
+          id: id,
+          vendor: vendor,
+          inisialVendor: inisialVendor,
+          descVendor: descVendor,
+          iconData: iconData,
+          hexColor: hexColor,
+          isAktif: isAktif,
+        );
 
   factory VendorModel.fromJson(Map<String, dynamic> json) {
     return VendorModel(

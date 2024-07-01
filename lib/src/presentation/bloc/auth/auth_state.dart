@@ -17,20 +17,20 @@ final class AuthLoading extends AuthState {
 }
 
 final class AuthFailure extends AuthState {
-  final ReturnResponseModel returnResponseModel;
+  final ReturnResponse returnResponse;
 
-  const AuthFailure({required this.returnResponseModel});
+  const AuthFailure({required this.returnResponse});
 
   @override
   // TODO: implement props
-  List<Object?> get props => [returnResponseModel];
+  List<Object?> get props => [returnResponse];
 }
 
 final class AuthSuccess extends AuthState {
-  final ReturnResponseModel returnResponseModel;
+  final ReturnResponse returnResponse;
 
-  const AuthSuccess({required this.returnResponseModel});
+  const AuthSuccess({required this.returnResponse});
   @override
   // TODO: implement props
-  List<Object?> get props => [returnResponseModel];
+  List<Object?> get props => [returnResponse];
 }

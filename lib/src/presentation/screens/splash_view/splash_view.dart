@@ -2,7 +2,7 @@ import 'package:bangli_service_center_bloc/src/common/constant.dart';
 import 'package:bangli_service_center_bloc/src/common/shared/rotate_animation.dart';
 import 'package:bangli_service_center_bloc/src/presentation/bloc/auth/auth_bloc.dart';
 import 'package:bangli_service_center_bloc/src/presentation/screens/login_view/login_view.dart';
-import 'package:bangli_service_center_bloc/src/presentation/screens/test_view.dart';
+import 'package:bangli_service_center_bloc/src/presentation/screens/main_page_view/main_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -36,7 +36,7 @@ class _SplashhhViewState extends State<SplashhhView> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const TestView(),
+                builder: (context) => const MainPageView(),
               ));
         }
       },

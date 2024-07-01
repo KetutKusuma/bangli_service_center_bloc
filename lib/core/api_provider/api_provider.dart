@@ -36,9 +36,13 @@ class ApiProvider implements BaseApiImpl {
   }) async {
     // TODO: implement delete
     if (isUseToken) {
-      assert(token == null, "required token");
+      // ini untuk cek jika Butuh token
+      // tapi tokennya tidak diisi
+      assert(token != null, "Required token");
     } else {
-      assert(token != null, "This method do not required token");
+      // ini untuk cek jika tidak butuh token
+      // tapi tokennya malah diisi
+      assert(token == null, "This method do not need token");
     }
     try {
       //**
@@ -58,7 +62,7 @@ class ApiProvider implements BaseApiImpl {
               },
       );
       Map<String, dynamic> dataDecode = jsonDecode(response.body);
-      if (response.statusCode != 200) {
+      if (response.statusCode >= 400) {
         return ApiResponseModel.errorFromJson(dataDecode);
       }
 
@@ -84,7 +88,7 @@ class ApiProvider implements BaseApiImpl {
                   },
           );
           Map<String, dynamic> dataDecode = jsonDecode(response.body);
-          if (response.statusCode != 200) {
+          if (response.statusCode >= 400) {
             return ApiResponseModel.errorFromJson(dataDecode);
           }
 
@@ -127,13 +131,17 @@ class ApiProvider implements BaseApiImpl {
     bool isUseToken = false,
     String? paramUrl = '',
     Map<String, dynamic>? params,
-    String? token = '',
+    String? token,
   }) async {
     // TODO: implement get
     if (isUseToken) {
-      assert(token == null, "required token");
+      // ini untuk cek jika Butuh token
+      // tapi tokennya tidak diisi
+      assert(token != null, "Required token");
     } else {
-      assert(token != null, "This method do not required token");
+      // ini untuk cek jika tidak butuh token
+      // tapi tokennya malah diisi
+      assert(token == null, "This method do not need token");
     }
     try {
       //**
@@ -214,17 +222,21 @@ class ApiProvider implements BaseApiImpl {
     Map<String, dynamic>? body,
     String? token,
   }) async {
-    log("kenapa ??");
     if (isUseToken) {
-      assert(token == null, "required token");
-    } else if (isUseToken == false) {
-      assert(token == null, "This method do not required token");
+      // ini untuk cek jika Butuh token
+      // tapi tokennya tidak diisi
+      assert(token != null, "Required token");
+    } else {
+      // ini untuk cek jika tidak butuh token
+      // tapi tokennya malah diisi
+      assert(token == null, "This method do not need token");
     }
     // TODO: implement post
     try {
       //**
       // INI UNTUK HTTPS
       // */
+
       var response = await http.post(
         /// PAKAI PARAMURL ATAU
         /// PAKAI PARAMS
@@ -236,12 +248,13 @@ class ApiProvider implements BaseApiImpl {
         headers: !isUseToken
             ? null
             : {
+                "Content-Type": "application/json",
                 HttpHeaders.authorizationHeader: 'Bearer $token',
               },
-        body: body,
+        body: json.encode(body),
       );
       Map<String, dynamic> dataDecode = jsonDecode(response.body);
-      if (response.statusCode != 200) {
+      if (response.statusCode >= 400) {
         return ApiResponseModel.errorFromJson(dataDecode);
       }
 
@@ -263,11 +276,13 @@ class ApiProvider implements BaseApiImpl {
             headers: !isUseToken
                 ? null
                 : {
+                    // "Content-Type": "application/json",
                     HttpHeaders.authorizationHeader: 'Bearer $token',
                   },
+            body: jsonEncode(body),
           );
           Map<String, dynamic> dataDecode = jsonDecode(response.body);
-          if (response.statusCode != 200) {
+          if (response.statusCode >= 400) {
             return ApiResponseModel.errorFromJson(dataDecode);
           }
 
@@ -286,6 +301,7 @@ class ApiProvider implements BaseApiImpl {
         log('Error catch post api provider ha $e');
 
         apiResponseModelError.message = 'Error berasal dari server : $e';
+
         return apiResponseModelError;
       }
     }
@@ -300,9 +316,13 @@ class ApiProvider implements BaseApiImpl {
     String? param,
   }) async {
     if (isUseToken) {
-      assert(token == null, "required token");
+      // ini untuk cek jika Butuh token
+      // tapi tokennya tidak diisi
+      assert(token != null, "Required token");
     } else {
-      assert(token != null, "This method do not required token");
+      // ini untuk cek jika tidak butuh token
+      // tapi tokennya malah diisi
+      assert(token == null, "This method do not need token");
     }
     try {
       //**
@@ -323,7 +343,7 @@ class ApiProvider implements BaseApiImpl {
         body: body,
       );
       Map<String, dynamic> dataDecode = jsonDecode(response.body);
-      if (response.statusCode != 200) {
+      if (response.statusCode >= 400) {
         return ApiResponseModel.errorFromJson(dataDecode);
       }
 
@@ -348,7 +368,7 @@ class ApiProvider implements BaseApiImpl {
                   },
           );
           Map<String, dynamic> dataDecode = jsonDecode(response.body);
-          if (response.statusCode != 200) {
+          if (response.statusCode >= 400) {
             return ApiResponseModel.errorFromJson(dataDecode);
           }
 
@@ -380,9 +400,13 @@ class ApiProvider implements BaseApiImpl {
     String? param,
   }) async {
     if (isUseToken) {
-      assert(token == null, "required token");
+      // ini untuk cek jika Butuh token
+      // tapi tokennya tidak diisi
+      assert(token != null, "Required token");
     } else {
-      assert(token != null, "This method do not required token");
+      // ini untuk cek jika tidak butuh token
+      // tapi tokennya malah diisi
+      assert(token == null, "This method do not need token");
     }
     try {
       //**
@@ -402,7 +426,7 @@ class ApiProvider implements BaseApiImpl {
               },
       );
       Map<String, dynamic> dataDecode = jsonDecode(response.body);
-      if (response.statusCode != 200) {
+      if (response.statusCode >= 400) {
         return ApiResponseModel.errorFromJson(dataDecode);
       }
 
@@ -428,7 +452,7 @@ class ApiProvider implements BaseApiImpl {
                   },
           );
           Map<String, dynamic> dataDecode = jsonDecode(response.body);
-          if (response.statusCode != 200) {
+          if (response.statusCode >= 400) {
             return ApiResponseModel.errorFromJson(dataDecode);
           }
 
@@ -463,9 +487,13 @@ class ApiProvider implements BaseApiImpl {
   }) async {
     // TODO: implement get with custom url
     if (isUseToken) {
-      assert(token == null, "required token");
+      // ini untuk cek jika Butuh token
+      // tapi tokennya tidak diisi
+      assert(token != null, "Required token");
     } else {
-      assert(token != null, "This method do not required token");
+      // ini untuk cek jika tidak butuh token
+      // tapi tokennya malah diisi
+      assert(token == null, "This method do not need token");
     }
     try {
       //**
@@ -549,9 +577,13 @@ class ApiProvider implements BaseApiImpl {
   }) async {
     // TODO: implement postCustomUrl
     if (isUseToken) {
-      assert(token == null, "required token");
+      // ini untuk cek jika Butuh token
+      // tapi tokennya tidak diisi
+      assert(token != null, "Required token");
     } else {
-      assert(token != null, "This method do not required token");
+      // ini untuk cek jika tidak butuh token
+      // tapi tokennya malah diisi
+      assert(token == null, "This method do not need token");
     }
     try {
       //**
@@ -573,7 +605,7 @@ class ApiProvider implements BaseApiImpl {
         body: body,
       );
       Map<String, dynamic> dataDecode = jsonDecode(response.body);
-      if (response.statusCode != 200) {
+      if (response.statusCode >= 400) {
         return ApiResponseModel.errorFromJson(dataDecode);
       }
 
@@ -599,7 +631,7 @@ class ApiProvider implements BaseApiImpl {
                   },
           );
           Map<String, dynamic> dataDecode = jsonDecode(response.body);
-          if (response.statusCode != 200) {
+          if (response.statusCode >= 400) {
             return ApiResponseModel.errorFromJson(dataDecode);
           }
 
@@ -633,9 +665,13 @@ class ApiProvider implements BaseApiImpl {
     String? param,
   }) async {
     if (isUseToken) {
-      assert(token == null, "required token");
+      // ini untuk cek jika Butuh token
+      // tapi tokennya tidak diisi
+      assert(token != null, "Required token");
     } else {
-      assert(token != null, "This method do not required token");
+      // ini untuk cek jika tidak butuh token
+      // tapi tokennya malah diisi
+      assert(token == null, "This method do not need token");
     }
     try {
       //**
@@ -656,7 +692,7 @@ class ApiProvider implements BaseApiImpl {
         body: body,
       );
       Map<String, dynamic> dataDecode = jsonDecode(response.body);
-      if (response.statusCode != 200) {
+      if (response.statusCode >= 400) {
         return ApiResponseModel.errorFromJson(dataDecode);
       }
 
@@ -681,7 +717,7 @@ class ApiProvider implements BaseApiImpl {
                   },
           );
           Map<String, dynamic> dataDecode = jsonDecode(response.body);
-          if (response.statusCode != 200) {
+          if (response.statusCode >= 400) {
             return ApiResponseModel.errorFromJson(dataDecode);
           }
 

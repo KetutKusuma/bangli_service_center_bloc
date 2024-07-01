@@ -1,9 +1,9 @@
-class ReturnResponseModel<T> {
-  bool? status = false;
+class ReturnResponse<T> {
+  bool status = false;
   String message = 'Error default';
   T? data;
 
-  ReturnResponseModel({
+  ReturnResponse({
     this.status = false,
     required this.message,
     this.data,
@@ -23,8 +23,8 @@ class ReturnResponseModel<T> {
   /// ini dapat berisi data dan message
   ///
   /// status pasti true
-  factory ReturnResponseModel.success(String message, {dynamic data}) {
-    return ReturnResponseModel(status: true, message: message, data: data);
+  factory ReturnResponse.success(String message, {dynamic data}) {
+    return ReturnResponse(status: true, message: message, data: data);
   }
 
   /// ini fungsi mengembalikan sukses dengan custom data single(singular)
@@ -32,12 +32,13 @@ class ReturnResponseModel<T> {
   /// dengan memasukkan fungsi pada create object
   /// contohnya (element) => UserModel.fromjson(element)
   /// maka data akan berisi dengan UserModel
-  factory ReturnResponseModel.successWDataNFunc({
+  factory ReturnResponse.successWDataNFunc({
     String? message,
     required Map<String, dynamic>? json,
     required Function(Map<String, dynamic> element)? createObject,
   }) {
-    return ReturnResponseModel<T>(
+    return ReturnResponse<T>(
+      status: true,
       message: message ?? "Sukses",
       data: createObject!(json ?? {}),
     );
@@ -50,12 +51,13 @@ class ReturnResponseModel<T> {
   ///                (e) => VendorModel.fromJson(e),
   ///              )
   ///           .toList(),
-  factory ReturnResponseModel.successWListDataNFunc({
+  factory ReturnResponse.successWListDataNFunc({
     String message = "Sukses",
     required List<Map<String, dynamic>> data,
     required Function(List<Map<String, dynamic>> element)? createObject,
   }) {
-    return ReturnResponseModel<T>(
+    return ReturnResponse<T>(
+      status: true,
       message: message,
       data: createObject!(data),
     );
@@ -64,7 +66,7 @@ class ReturnResponseModel<T> {
   /// ini adalah returnResponse Gagal Umum
   ///
   /// status pasti false
-  factory ReturnResponseModel.failed(String message) {
-    return ReturnResponseModel(status: false, message: message, data: null);
+  factory ReturnResponse.failed(String message, {dynamic data}) {
+    return ReturnResponse(status: false, message: message, data: data);
   }
 }

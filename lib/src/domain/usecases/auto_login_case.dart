@@ -6,7 +6,7 @@ class AutoLoginCase {
 
   AutoLoginCase(this.remoteDataSource);
 
-  Future<ReturnResponseModel> call() async {
+  Future<ReturnResponse> call() async {
     return await remoteDataSource.autoLogin();
   }
 }

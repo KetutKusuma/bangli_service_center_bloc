@@ -6,7 +6,7 @@ class LogInCase {
 
   LogInCase(this.remoteDataSource);
 
-  Future<ReturnResponseModel> call(String phone, String password) async {
+  Future<ReturnResponse> call(String phone, String password) async {
     return await remoteDataSource.login(phone, password);
   }
 }

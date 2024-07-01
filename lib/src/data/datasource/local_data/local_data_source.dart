@@ -44,7 +44,7 @@ class LocalDataSource {
     );
   }
 
-  Future<ReturnResponseModel> auth(String token, String refreshToken) async {
+  Future<ReturnResponse> auth(String token, String refreshToken) async {
     final db = await database;
     var dbCheckToken = await db.query('auth');
     if (dbCheckToken.isEmpty) {
@@ -57,7 +57,7 @@ class LocalDataSource {
         },
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
-      return ReturnResponseModel.success("Sukses simpan token");
+      return ReturnResponse.success("Sukses simpan token");
     } else {
       await db.update(
         'auth',
@@ -66,14 +66,14 @@ class LocalDataSource {
           "refresh_token": refreshToken,
         },
       );
-      return ReturnResponseModel.success("Sukses Update Token");
+      return ReturnResponse.success("Sukses Update Token");
     }
 
     // var dbprint = await db.query('auth');
     // log("isi auth :  ${dbprint.toString()}");
   }
 
-  Future<ReturnResponseModel> updateAccesToken(
+  Future<ReturnResponse> updateAccesToken(
       String accesToken, String refreshToken, String refreshTokenNew) async {
     try {
       final db = await database;
@@ -89,30 +89,29 @@ class LocalDataSource {
         ],
       );
 
-      return ReturnResponseModel.success("Token Updated");
+      return ReturnResponse.success("Token Updated");
     } catch (e) {
       log("message error update acces token : $e");
-      return ReturnResponseModel.failed(
+      return ReturnResponse.failed(
           "Terjadi kesalahan, error catch update token : $e");
     }
   }
 
-  Future<ReturnResponseModel<TokenModel>> getUserToken() async {
+  Future<ReturnResponse<TokenModel>> getUserToken() async {
     try {
       final db = await database;
       final List<Map<String, dynamic>> maps = await db.query(
         authTable,
       );
-      // log("mapnya : $maps");
       if (maps.isNotEmpty) {
-        return ReturnResponseModel.success("Load Success",
+        return ReturnResponse.success("Load Success",
             data: TokenModel.fromJson(maps.first));
       } else {
-        return ReturnResponseModel.failed("No Data");
+        return ReturnResponse.failed("No Data");
       }
     } catch (e) {
       log('message error sqlite : $e');
-      return ReturnResponseModel.failed("No data : $e");
+      return ReturnResponse.failed("error catch get use token No data : $e");
     }
   }
 

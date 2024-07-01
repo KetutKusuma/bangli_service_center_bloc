@@ -1,6 +1,7 @@
 import 'package:bangli_service_center_bloc/injection.dart';
 import 'package:bangli_service_center_bloc/simple_bloc_observer.dart';
 import 'package:bangli_service_center_bloc/src/presentation/bloc/auth/auth_bloc.dart';
+import 'package:bangli_service_center_bloc/src/presentation/bloc/complaint/complaint_bloc.dart';
 import 'package:bangli_service_center_bloc/src/presentation/screens/splash_view/splash_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,12 +20,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => sl<AuthBloc>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => sl<AuthBloc>(),
+        ),
+        BlocProvider<ComplaintBloc>(
+          create: (context) => sl<ComplaintBloc>(),
+        ),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Bangli Service Center Bloc',
         theme: ThemeData(
+          useMaterial3: true,
           primarySwatch: Colors.blue,
         ),
         home: const SplashhhView(),

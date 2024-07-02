@@ -1,18 +1,23 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:bangli_service_center_bloc/src/common/constant.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:progress_dialog_null_safe/progress_dialog_null_safe.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
 
 class ShowAlertOrProgress {
-  static progressCustom({
-    required SimpleFontelicoProgressDialog pd,
+  static ProgressDialog progressCustom({
+    required BuildContext context,
+    bool? isDismiss = false,
   }) {
-    pd.show(
-      width: deviceWidth(pd.context),
-      type: SimpleFontelicoProgressDialogType.custom,
+    ProgressDialog pd = ProgressDialog(
+      context,
+      isDismissible: isDismiss,
+      type: ProgressDialogType.normal,
+    );
+    pd.style(
       backgroundColor: Colors.transparent,
-      loadingIndicator: Column(
+      progressWidget: Column(
         children: [
           Padding(
             padding: const EdgeInsets.only(bottom: 5.0),
@@ -34,12 +39,12 @@ class ShowAlertOrProgress {
         ],
       ),
       // message: "Tunggu sebentar...",
-      message: '',
-      textStyle: const TextStyle(
-        color: Colors.white,
-        fontSize: 15,
-      ),
+      // textStyle: const TextStyle(
+      //   color: Colors.white,
+      //   fontSize: 15,
+      // ),
     );
+    return pd;
   }
 
   static alertFiturInProgress({

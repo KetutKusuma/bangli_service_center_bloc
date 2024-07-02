@@ -65,6 +65,8 @@ class ApiDataSourceImpl implements ApiDataSource {
         },
       );
 
+      log("res : $apiRes");
+
       if (apiRes.isSuccess == true) {
         TokenModel token = TokenModel.fromJsonAPI(apiRes.data);
         ReturnResponse storeToken =
@@ -173,7 +175,6 @@ class ApiDataSourceImpl implements ApiDataSource {
           "long": loc.data!.longitude.toString(),
         },
       );
-
       if (!res.isSuccess) {
         return ReturnResponse.failed(res.errorMessage!);
       }

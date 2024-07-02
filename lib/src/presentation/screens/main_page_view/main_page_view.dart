@@ -6,8 +6,8 @@ import 'package:double_tap_to_exit/double_tap_to_exit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:progress_dialog_null_safe/progress_dialog_null_safe.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
 
 class MainPageView extends StatefulWidget {
   const MainPageView({super.key});
@@ -19,7 +19,7 @@ class MainPageView extends StatefulWidget {
 class _MainPageViewState extends State<MainPageView> {
   late PageController pageController;
   int? pageIndex;
-  late SimpleFontelicoProgressDialog pd;
+  late ProgressDialog pd;
 
   @override
   void initState() {
@@ -30,14 +30,10 @@ class _MainPageViewState extends State<MainPageView> {
 
   @override
   Widget build(BuildContext context) {
-    pd = SimpleFontelicoProgressDialog(
-      context: context,
-      barrierDimisable: false,
-    );
     return BlocListener<ComplaintBloc, ComplaintState>(
       listener: (context, state) {
         if (state is ComplaintLoading) {
-          ShowAlertOrProgress.progressCustom(pd: pd);
+          pd = ShowAlertOrProgress.progressCustom(context: context);
         }
         if (state is ComplaintSuccess) {
           pd.hide();
@@ -67,11 +63,6 @@ class _MainPageViewState extends State<MainPageView> {
           backgroundColor: primaryColor,
         ),
         child: Scaffold(
-          // appBar: AppBar(
-          //   backgroundColor: lightGrey,
-          //   automaticallyImplyLeading: false,
-          //   elevation: 0,
-          // ),
           body: PageView(
             controller: pageController,
             onPageChanged: (value) {
@@ -121,7 +112,6 @@ class _MainPageViewState extends State<MainPageView> {
                       ),
                       onPressed: () {
                         Navigator.pop(context);
-                        idPSC.value = "e929b973-77f6-4478-93af-938fdbcb7c8a";
                         if (idPSC.value == "") {
                           alertError(
                               isDismiss: true,

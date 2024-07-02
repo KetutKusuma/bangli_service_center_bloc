@@ -29,9 +29,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await _logInCase.call(loginEvent.phone, loginEvent.password);
     if (r.status == false) {
       return emit(AuthFailure(returnResponse: r));
+    } else {
+      return emit(AuthSuccess(returnResponse: r));
     }
-
-    return emit(AuthSuccess(returnResponse: r));
   }
 
   Future<void> autologinnn(

@@ -1,16 +1,18 @@
+import 'dart:developer';
+
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:bangli_service_center_bloc/src/common/constant.dart';
 import 'package:bangli_service_center_bloc/src/common/shared/shared_button/filled_custom_button.dart';
 import 'package:bangli_service_center_bloc/src/common/shared/shared_card/custom_card_white_padd.dart';
 import 'package:bangli_service_center_bloc/src/common/shared/shared_custom_alert/custom_alert.dart';
 import 'package:bangli_service_center_bloc/src/common/shared/shared_form/custom_form_field.dart';
-import 'package:bangli_service_center_bloc/src/common/show_alert_or_progress.dart';
 import 'package:bangli_service_center_bloc/src/presentation/bloc/auth/auth_bloc.dart';
 import 'package:bangli_service_center_bloc/src/presentation/screens/main_page_view/main_page_view.dart';
 import 'package:double_tap_to_exit/double_tap_to_exit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
+import 'package:progress_dialog_null_safe/progress_dialog_null_safe.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -22,12 +24,31 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   bool? isObsecurePass;
   TextEditingController? phoneController, passwordController;
-  late SimpleFontelicoProgressDialog pd;
+  late ProgressDialog pd;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    pd = ProgressDialog(context);
+    pd.style(
+      message: 'Loading...',
+      borderRadius: 10.0,
+      backgroundColor: Colors.white,
+      progressWidget: CircularProgressIndicator(),
+      elevation: 10.0,
+      insetAnimCurve: Curves.easeInOut,
+      progressTextStyle: TextStyle(
+        color: Colors.black,
+        fontSize: 12.0,
+        fontWeight: FontWeight.w400,
+      ),
+      messageTextStyle: TextStyle(
+        color: Colors.black,
+        fontSize: 19.0,
+        fontWeight: FontWeight.w600,
+      ),
+    );
     isObsecurePass = true;
     phoneController = TextEditingController();
     passwordController = TextEditingController();
@@ -35,15 +56,10 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    pd = SimpleFontelicoProgressDialog(
-      context: context,
-      barrierDimisable: false,
-    );
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
-        if (state is AuthLoading) {
-          ShowAlertOrProgress.progressCustom(pd: pd);
-        } else if (state is AuthSuccess) {
+        log("stete : ${state is AuthFailure}");
+        if (state is AuthSuccess) {
           pd.hide();
           Navigator.pushAndRemoveUntil(
             context,
@@ -53,24 +69,15 @@ class _LoginViewState extends State<LoginView> {
             (context) => false,
           );
         } else if (state is AuthFailure) {
+          log("MASOKK GA SI");
           pd.hide();
+          Navigator.pop(context);
           alertError(
             isDismiss: true,
             context: context,
             desc: state.returnResponse.message,
-          ).then((value) {
-            Navigator.pop(context);
-          });
-        } else {
-          pd.hide();
-          alertError(
-            isDismiss: true,
-            context: context,
-            desc: "Terjadi kesalahan",
-          ).then((value) {
-            Navigator.pop(context);
-          });
-        }
+          );
+        } else if (state is AuthLoading) {}
       },
       child: DoubleTapToExit(
         snackBar: SnackBar(
@@ -164,6 +171,12 @@ class _LoginViewState extends State<LoginView> {
                               context: context,
                               desc: "Nomor handphone masih kosong");
                         } else {
+                          pd.show().onError((lala, e) {
+                            log(
+                              "lala : $lala and $e",
+                            );
+                            return true;
+                          });
                           context.read<AuthBloc>().add(
                                 LoginEvent(
                                   phone: phoneController!.text,

@@ -40,7 +40,7 @@ class _LoginViewState extends State<LoginView> {
       barrierDimisable: false,
     );
     return BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is AuthLoading) {
           ShowAlertOrProgress.progressCustom(pd: pd);
         } else if (state is AuthSuccess) {
@@ -59,6 +59,7 @@ class _LoginViewState extends State<LoginView> {
             context: context,
             desc: state.returnResponse.message,
           ).then((value) {
+            pd.hide();
             Navigator.pop(context);
           });
         } else {
@@ -68,6 +69,7 @@ class _LoginViewState extends State<LoginView> {
             context: context,
             desc: "Terjadi kesalahan",
           ).then((value) {
+            pd.hide();
             Navigator.pop(context);
           });
         }
